@@ -38,3 +38,9 @@ plot(regfit.full, scale = "bic")
 
 # Check model with only 6 variables
 coef(regfit.full, 6)
+
+# Forward and Backward Stepwise Selection
+regfit.fwd <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19, method = "forward")
+summary(regfit.fwd)
+regfit.bwd <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19, method = "backward")
+summary(regfit.bwd)

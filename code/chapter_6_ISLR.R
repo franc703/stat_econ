@@ -72,3 +72,13 @@ predict.regsubsets <- function(object, newdata, id, ...) {
   mat[, xvars] %*% coefi
 }
 
+regfit.best <- regsubsets(Salary ~ ., data = Hitters)
+coef(regfit.best, 7)
+
+# Cross validation 10 folds
+k <- 10
+n <- nrow(Hitters)
+set.seed(1)
+folds <- sample(rep(1:k, length = n))
+cv.errors <- matrix(NA, k, 19, dimnames = list(NULL, paste(1:19)))
+

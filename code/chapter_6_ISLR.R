@@ -44,3 +44,22 @@ regfit.fwd <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19, method = "forwa
 summary(regfit.fwd)
 regfit.bwd <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19, method = "backward")
 summary(regfit.bwd)
+
+# Choosing Among Models Using Validation-Set and Cross-Validation
+set.seed(123)
+train <- sample(c(TRUE, FALSE), nrow(Hitters), replace = TRUE)
+test <- (!train)
+regfit.best <- regsubsets(Salary ~ ., data = Hitters[train, ], nvmax = 19)
+
+test.mat <- model.matrix(Salary ~ ., data = Hitters[test,])
+val.errors <- rep(NA, 19)
+for (i in 1:19) {
+  coefi <- coef(regfit.best, id = i)
+  pred <- test.mat[, names(coefi)] %*% coefi
+  val.errors[i] <- mean((Hitters$Salary[test] - pred)^2)
+}
+
+which.min(val.errors)
+
+coef(regfit.best, 5)
+

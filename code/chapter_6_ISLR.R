@@ -82,3 +82,12 @@ set.seed(1)
 folds <- sample(rep(1:k, length = n))
 cv.errors <- matrix(NA, k, 19, dimnames = list(NULL, paste(1:19)))
 
+for (j in 1:k) {
+  best.fit <- regsubsets(Salary ~ ., data = Hitters[folds != j, ], nvmax = 19)
+  for (i in 1:19) {
+    pred <- predict(best.fit, Hitters[folds == j, ], id = i)
+    cv.errors[j, i] <- mean((Hitters$Salary[folds == j] - pred)^2)
+  }
+}
+
+

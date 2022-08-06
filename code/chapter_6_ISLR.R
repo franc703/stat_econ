@@ -90,4 +90,13 @@ for (j in 1:k) {
   }
 }
 
+mean.cv.errors <- apply(cv.errors, 2, mean)
+mean.cv.errors
+
+par(mfrow = c(1, 1))
+plot(mean.cv.errors, type = "b")
+
+reg.best <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19)
+coef(reg.best, 10)
+
 

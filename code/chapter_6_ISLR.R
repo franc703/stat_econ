@@ -46,7 +46,7 @@ regfit.bwd <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19, method = "backw
 summary(regfit.bwd)
 
 # Choosing Among Models Using Validation-Set and Cross-Validation
-set.seed(123)
+set.seed(1)
 train <- sample(c(TRUE, FALSE), nrow(Hitters), replace = TRUE)
 test <- (!train)
 regfit.best <- regsubsets(Salary ~ ., data = Hitters[train, ], nvmax = 19)
@@ -61,7 +61,7 @@ for (i in 1:19) {
 
 which.min(val.errors)
 
-coef(regfit.best, 5)
+coef(regfit.best, 7)
 
 # Create function for subsets
 predict.regsubsets <- function(object, newdata, id, ...) {
@@ -72,7 +72,7 @@ predict.regsubsets <- function(object, newdata, id, ...) {
   mat[, xvars] %*% coefi
 }
 
-regfit.best <- regsubsets(Salary ~ ., data = Hitters)
+regfit.best <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19)
 coef(regfit.best, 7)
 
 # Cross validation 10 folds

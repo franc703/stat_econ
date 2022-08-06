@@ -1,5 +1,6 @@
 library(ISLR2)
 library(leaps)
+library(glmnet)
 
 Hitters <- na.omit(Hitters)
 
@@ -98,5 +99,17 @@ plot(mean.cv.errors, type = "b")
 
 reg.best <- regsubsets(Salary ~ ., data = Hitters, nvmax = 19)
 coef(reg.best, 10)
+
+
+# Ridge regression and the lasso
+x <- model.matrix(Salary ~ ., Hitters)[, -1]
+y <- Hitters$Salary
+
+# Ridge regression
+grid <- 10^seq(10, -2, length = 100)
+ridge.mod <- glmnet(x, y, alpha = 0, lambda = grid)
+
+dim(coef(ridge.mod))
+
 
 

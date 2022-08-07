@@ -190,7 +190,14 @@ pcr.fit <- pcr(y ~ x, scale = TRUE, ncomp = 5)
 summary(pcr.fit)
 
 # PLS regression
-
+set.seed(1)
+pls.fit <- plsr(Salary ~ ., data = Hitters, subset = train, scale = TRUE, validation = "CV")
+summary(pls.fit)
+validationplot(pls.fit, val.type = "MSEP")
+pls.pred <- predict(pls.fit,x[test, ], ncomp = 1)
+mean((pls.pred - y.test)^2)
+pls.fit <- plsr(Salary ~ ., data = Hitters, scale = TRUE, ncomp = 1)
+summary(pls.fit)
 
 
 

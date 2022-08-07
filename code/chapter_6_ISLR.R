@@ -1,6 +1,7 @@
 library(ISLR2)
 library(leaps)
 library(glmnet)
+library(pls)
 
 Hitters <- na.omit(Hitters)
 
@@ -171,6 +172,25 @@ out <- glmnet(x, y, alpha = 1, lambda = bestlam)
 lasso.coef <- predict(out, type = "coefficients", s = bestlam)[1:20, ]
 lasso.coef
 lasso.coef[lasso.coef != 0]
+
+# PCR and PLS regression
+
+# PCR
+set.seed(2)
+pcr.fit <- pcr(Salary ~ ., data = Hitters, scale = TRUE, validation = "CV")
+summary(pcr.fit)
+validationplot(pcr.fit, val.type = "MSEP")
+
+set.seed(1)
+pcr.fit <- pcr(Salary ~ ., data = Hitters, subset = train, scale = TRUE, validation = "CV")
+validationplot(pcr.fit, val.type = "MSEP")
+pcr.pred <- predict(pcr.fit, x[test, ], ncomp = 5)
+mean((pcr.pred - y.test)^2)
+pcr.fit <- pcr(y ~ x, scale = TRUE, ncomp = 5)
+summary(pcr.fit)
+
+# PLS regression
+
 
 
 

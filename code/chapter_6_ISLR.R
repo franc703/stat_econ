@@ -111,5 +111,18 @@ ridge.mod <- glmnet(x, y, alpha = 0, lambda = grid)
 
 dim(coef(ridge.mod))
 
+ridge.mod$lambda[50]
+coef(ridge.mod)[, 50]
+
+sqrt(sum(coef(ridge.mod)[-1, 50])^2)
+
+ridge.mod$lambda[60]
+
+coef(ridge.mod)[, 60]
+
+sqrt(sum(coef(ridge.mod)[-1, 50])^2)
+
+predict(ridge.mod, s = 50, type = "coefficients")[1:20, ]
+
 
 

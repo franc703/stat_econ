@@ -16,3 +16,12 @@ df['X'] = np.random.uniform(size = 200) < .2 + df['W']
 # True effect of X on Y is 3
 df['Y'] = 3*df['X'] + df['W'] + np.random.normal(size = 200)
 
+# create a function with the previous
+def create_data(N = 200):
+    df = pd.DataFrame({
+        'W': np.random.uniform(0, .1, size = N)})
+    df['X'] = np.random.uniform(size = N) < .2 + df['W']
+    df['Y'] = 3*df['X'] + df['W'] + np.random.normal(size = N)
+    return df
+
+

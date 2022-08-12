@@ -58,3 +58,15 @@ def create_panel_data(N = 200, T = 10):
 
     p['Y'] = 3*p['X'] + p['W1'] - 2*p['W2'] + np.random.normal(size = N*T)
     return p
+
+# Create heterocedasticity
+def create_het_data(N = 200):
+    d = pd.DataFrame({
+        'X': np.random.uniform(size = N)
+    })
+    # Let the standard deviation of the error be related to X.
+    d['Y'] = 3*d['X'] + np.random.normal(scale = 5*d['X'])
+
+    return d
+
+create_het_data(500)

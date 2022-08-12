@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from itertools import product
 #%%
 
 # set a random seed to obtain same results every run
@@ -24,4 +25,36 @@ def create_data(N = 200):
     df['Y'] = 3*df['X'] + df['W'] + np.random.normal(size = N)
     return df
 
+create_data(500)
 
+#%%
+np.random.seed(123)
+
+# N for number of individuals and T for number of periods
+def create_panel_data(N = 200, T = 10):
+    # Use product to get all combinations of individual and time
+    p = pd.DataFrame(
+        product(range(0,N), range(0, T))
+    )
+    p.columns = ['ID', 't']
+
+    # Individual and time-varying variable
+    p['W1'] = np.random.normal(size = N*T)
+
+    # Individual Data
+    indiv_data = pd.DataFrame({
+        'ID' : range(0, N),
+        'W2' : np.random.normal(size = N)
+    })
+
+    # Bring them together
+    p = p.merge(indiv_data, on = 'ID')
+
+    # Create X, caused by W1 and W2
+    p['X'] = 2*p['W1'] + 1.5*p['W2'] + np.random.normal(size = N*T)
+
+    # Create Y the true effect of X on Y is 3
+    # W1 and W2 has causal effect too
+
+    p['Y'] = 3*p['X'] + p['W1'] - 2*p['W2'] + np.random.normal(size = N*T)
+    return p

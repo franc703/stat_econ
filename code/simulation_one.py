@@ -70,3 +70,5 @@ def create_het_data(N = 200):
     return d
 
 create_het_data(500)
+
+# create new simulation
